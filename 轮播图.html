@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .wrapper{
+            width: 100%;
+            height: 100%;
+        }
+
+        .innerBox {
+            margin: 0 auto;
+            position: relative;
+            width: 590px;
+            height: 470px;
+            overflow: hidden;
+        }
+
+        .innerBox ul{
+            width: 590px;
+            height: 470px;
+            
+            position: relative;
+            left: 0;
+        }
+
+        .innerBox ul li{
+            display: inline-block;
+            width: 590px;
+            height: 470px;
+            position: absolute;
+        }
+
+        .innerBox ul li img{
+            width: 590px;
+            height: 470px;
+        }
+
+        /* .inner{
+            transition: all 1s;
+        } */
+
+        .conList {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .conList div{
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #fff;
+            display: inline-block;
+            margin: 0 3px;
+        }
+
+        .conList .active {
+            background-color: aqua;
+        }
+
+        .btn {
+            color: #fff;
+            font-weight: bolder;
+            font-size: 30px;
+            line-height: 100px;
+            text-align: center;
+            display: inline;
+            cursor: pointer;
+        }
+    
+        .btn .left{
+            width: 50px;
+            height: 100px;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            margin-top: -50px;
+            background-color: #666;
+            opacity: 0.6;
+        }
+
+        .btn .left:hover {
+            opacity: 1;
+        }
+
+        .btn .right{
+            width: 50px;
+            height: 100px;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            margin-top: -50px;
+            background-color: #666;
+            opacity: 0.6;
+        }
+
+        .btn .right:hover {
+            opacity: 1;
+        }
+
+
+    </style>
+    <script src="./jquery.js"></script>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="innerBox">
+            <ul class="inner">
+                <li>
+                    <img src="images/1.jpg">
+                </li>
+                <li>
+                    <img src="images/2.jpg">
+                </li>
+                <li>
+                    <img src="images/3.jpg">
+                </li>
+                <li>
+                    <img src="images/4.jpg">
+                </li>
+                <li>
+                    <img src="images/5.jpg">
+                </li>
+                <li>
+                    <img src="images/6.jpg">
+                </li>
+                <li>
+                    <img src="images/1.jpg">
+                </li>
+            </ul>
+            <div class="btn">
+                <div class="left"><</div>
+                <div class="right">></div>
+            </div>
+            <div class="conList">
+                <div class="active"></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        
+        var boxWidth = $('.inner li').width();
+        var timer = null;
+        var nowIndex = 0;
+        var len = oLi.length - 1;
+
+        function init() {
+            for(var i = 0 ; i <= len ; i ++) {
+                $('.inner li').eq(i).css({left: boxWidth * i})
+            }
+
+            bindEvent();
+            play();
+        }
+
+        function bindEvent() {
+            $('.left').on('click', function () {
+                clearTimeout(timer)
+                move('left')
+            })
+            $('.right').on('click', function () {
+                clearTimeout(timer)
+                move('right')
+            }) 
+            $('.conList div').on('click', function() {
+                clearTimeout(timer)
+                move($(this).index())
+            })
+        }
+
+
+        function play() {
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                move('right')
+            }, 2000)
+        }
+
+        function move(dir) {
+            // debugger;
+            if(dir === 'right') {
+                console.log("1111")
+                if(nowIndex == (len - 1)) {
+                    $('.inner').animate({left: -(590 * len)}, function () {
+                        $(this).css({left: 0})
+                        play();
+                    })
+                        nowIndex = 0;
+                }else {
+                    nowIndex ++;
+                    $('.inner').animate({left: -590 * nowIndex}, function () {
+                        play();
+                    })
+                }
+            
+                
+                
+            }else if(dir === 'left') {
+                
+                if(nowIndex == 0) {
+                    $('.inner').css({left: -590 * len});
+                    nowIndex = len - 1;
+                } else {
+                    nowIndex--;
+                    
+                }
+                $('.inner').animate({left: -(590 * nowIndex)}, function () {
+                    console.log("222")
+                        play();
+                    })
+            }else {
+                nowIndex = dir
+            
+                $('.inner').animate({left: -(590 * nowIndex)}, function () {
+                    console.log("222")
+                        play();
+                    })
+                }
+            
+           changeCon(nowIndex)
+        }
+
+        
+        
+        function changeCon (index) {
+            $('.active').removeClass('active')
+            $('.conList div').eq(index).addClass('active')
+        }
+
+
+        init();
+       
+    
+    
+    
+    </script>
+
+</body>
+
+</html>
